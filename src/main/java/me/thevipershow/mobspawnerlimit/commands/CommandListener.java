@@ -28,7 +28,7 @@ public class CommandListener implements CommandExecutor {
                 if (sender.hasPermission("msl.reload")) {
                     MobSpawnerLimit.plugin.reloadConfig();
                     values.setValues(MobSpawnerLimit.plugin.getConfig());
-                    sender.sendMessage(Utils.color("&7- &aConfig.yml reloaded correctly."));
+                    sender.sendMessage(Utils.color("&aConfig.yml reloaded correctly."));
                 } else {
                     sender.sendMessage(Messages.NO_PERMISSION.getString("msl.reload"));
                 }
@@ -41,7 +41,7 @@ public class CommandListener implements CommandExecutor {
                     switch (args[1].toLowerCase()) {
                         case "limit":
                             int limitInput = Integer.parseInt(args[2]);
-                            if (limitInput >= 0 && limitInput <= 65535) {
+                            if (limitInput >= 0 && limitInput <= 65536) {
                                 values.setLimit(Integer.parseInt(args[2]), MobSpawnerLimit.plugin.getConfig());
                                 sender.sendMessage(Messages.UPDATE_SUCCESS.getString(args[2]));
                             } else {

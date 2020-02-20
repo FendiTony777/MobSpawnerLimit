@@ -10,7 +10,7 @@ public enum Messages {
     UPDATE_SUCCESS("&2» &aValue updated successfully to &7%s"),
     UPDATE_FAILED("&4» &cValue &7%s &cwas invalid");
 
-    private String string;
+    private final String string;
 
     Messages(String string) {
         this.string = string;

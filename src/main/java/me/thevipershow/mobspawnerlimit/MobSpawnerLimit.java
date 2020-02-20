@@ -16,7 +16,6 @@ public final class MobSpawnerLimit extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         saveDefaultConfig();
         plugin = this;
         logger = this.getLogger();
