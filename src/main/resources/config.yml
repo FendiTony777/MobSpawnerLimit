@@ -1,0 +1,5 @@
+chunk:
+  enabled: true
+  limit: 2
+  messages:
+    - "&8[&aMobSpawnerLimit&8]&7: &6Chunk spawners limit reached!"

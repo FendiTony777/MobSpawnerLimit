@@ -1,0 +1,8 @@
+name: 'MobSpawnerLimit'
+version: ${project.version}
+main: me.thevipershow.mobspawnerlimit.MobSpawnerLimit
+api-version: '1.13'
+description: 'Limit amount of mob spawners in a certain chunk'
+commands:
+  msl:
+    description: 'Main command of MobSpawnerLimit plugin.'
