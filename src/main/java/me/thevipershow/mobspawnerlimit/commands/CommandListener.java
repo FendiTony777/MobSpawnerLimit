@@ -8,6 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import javax.annotation.Nonnull;
+
 public class CommandListener implements CommandExecutor {
 
     private final Values values = new Values();
@@ -19,7 +21,7 @@ public class CommandListener implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender,@Nonnull Command command, @Nonnull String label,@Nonnull String[] args) {
 
         if (args.length == 0) {
             sendHelp(sender);
@@ -50,7 +52,7 @@ public class CommandListener implements CommandExecutor {
                             break;
                         case "enabled":
                             if (args[2].equals("false") || args[2].equals("true")) {
-                                values.setEnabled(Boolean.valueOf(args[2]), MobSpawnerLimit.plugin.getConfig());
+                                values.setEnabled(Boolean.parseBoolean(args[2]), MobSpawnerLimit.plugin.getConfig());
                                 sender.sendMessage(Messages.UPDATE_SUCCESS.getString(args[2]));
                             } else {
                                 sender.sendMessage(Messages.UPDATE_FAILED.getString(args[2]));

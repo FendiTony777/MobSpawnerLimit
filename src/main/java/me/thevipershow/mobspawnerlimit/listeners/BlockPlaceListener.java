@@ -25,7 +25,7 @@ public class BlockPlaceListener implements Listener {
             if (block.getType().equals(spawner)) {
                 player = event.getPlayer();
                 chunk = block.getChunk();
-                if (Utils.chunkHasMaterial(spawner, chunk) > values.getLimit()-1) {
+                if (Utils.chunkHasMaterial(spawner, chunk) > values.getLimit() - 1) {
                     event.setCancelled(true);
                     values.getMessages().forEach(message -> player.sendMessage(Utils.color(message)));
                 }
