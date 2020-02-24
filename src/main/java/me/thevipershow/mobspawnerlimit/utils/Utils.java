@@ -2,8 +2,10 @@ package me.thevipershow.mobspawnerlimit.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.EntityType;
 
 public class Utils {
 
