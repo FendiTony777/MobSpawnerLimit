@@ -18,19 +18,18 @@ public final class MobSpawnerLimit extends JavaPlugin {
 
     public static Plugin plugin;
     public static Logger logger;
-    public static final Set<Chunk> chunks = new HashSet<>();
-
+    public final Set<Chunk> chunks = new HashSet<>();
+    private Values values;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         plugin = this;
         logger = this.getLogger();
-        Values values = new Values();
-        values.setValues(getConfig());
-        Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
-        Objects.requireNonNull(Bukkit.getPluginCommand("msl")).setExecutor(new CommandListener());
-        Bukkit.getScheduler().runTaskTimer(this, new ChunkInspector(), 20L, 10L);
+        values = Values.getInstance(this);
+        Bukkit.getPluginManager().registerEvents(BlockPlaceListener.getInstance(values, chunks), this);
+        Objects.requireNonNull(Bukkit.getPluginCommand("msl")).setExecutor(CommandListener.getInstance(values));
+        Bukkit.getScheduler().runTaskTimer(this, new ChunkInspector(values, chunks), 20L, 10L);
     }
 
     @Override

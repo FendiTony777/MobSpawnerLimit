@@ -6,7 +6,7 @@
 
     <groupId>me.thevipershow</groupId>
     <artifactId>MobSpawnerLimit</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>MobSpawnerLimit</name>
@@ -72,6 +72,5 @@
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 </project>

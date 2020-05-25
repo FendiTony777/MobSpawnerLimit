@@ -9,10 +9,10 @@ import org.bukkit.entity.EntityType;
 
 public class Utils {
 
-    public static int chunkHasMaterial(Material material, Chunk chunk) {
+    public static int chunkHasMaterial(final Material material, final Chunk chunk) {
         int targetBlocksCounter = 0;
         for (BlockState blockState : chunk.getTileEntities()) {
-            if (blockState.getType().equals(material)) {
+            if (blockState.getType() == material) {
                 targetBlocksCounter++;
             }
         }
@@ -22,5 +22,4 @@ public class Utils {
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
-
 }
