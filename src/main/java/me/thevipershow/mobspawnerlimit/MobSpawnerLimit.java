@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 public final class MobSpawnerLimit extends JavaPlugin {
 
-    public static Plugin plugin;
-    public static Logger logger;
+    public Plugin plugin;
+    public Logger logger;
     public final Set<Chunk> chunks = new HashSet<>();
     private Values values;
 

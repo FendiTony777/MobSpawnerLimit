@@ -39,7 +39,6 @@ public class CommandListener implements CommandExecutor {
         } else if (args.length == 1) {
             if (args[0].equals("reload")) {
                 if (sender.hasPermission("msl.reload")) {
-                    MobSpawnerLimit.plugin.reloadConfig();
                     values.updateValues();
                     sender.sendMessage(Utils.color("&aConfig.yml reloaded correctly."));
                 } else {
