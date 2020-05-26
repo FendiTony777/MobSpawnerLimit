@@ -3,10 +3,10 @@
 #▐█ ▌▐▌▐█· ▄█▀▄ ▐█▀▀█▄▄▀▀▀█▄ ██▀·▄█▀▀█ ██▪▐█▐▐▌▐█▐▐▌▐▀▀▪▄▐▀▀▄ ██▪  ▐█·▐█ ▌▐▌▐█·▐█· ▐█.▪
 #██ ██▌▐█▌▐█▌.▐▌██▄▪▐█▐█▄▪▐█▐█▪·•▐█ ▪▐▌▐█▌██▐█▌██▐█▌▐█▄▄▌▐█•█▌▐█▌▐▌▐█▌██ ██▌▐█▌▐█▌ ▐█▌·
 #▀▀  █▪▀▀▀ ▀█▄▀▪·▀▀▀▀  ▀▀▀▀ .▀    ▀  ▀  ▀▀▀▀ ▀▪▀▀ █▪ ▀▀▀ .▀  ▀.▀▀▀ ▀▀▀▀▀  █▪▀▀▀▀▀▀ ▀▀▀
-#Plugin made by love by TheViperShow.
+#Plugin made with love by TheViperShow <3.
 chunk:
   enabled: true #this enabled/disables the plugin.
-  limit: 2 #the maximum number of spawners inside a chunk allowed, note: 0 ≤ limit ≤ 65536
+  limit: 2 #the maximum number of spawners inside a chunk allowed, NOTE: 0 ≤ limit ≤ 65536
   messages:
-    - "&8[&aMobSpawnerLimit&8]&7: &6Chunk spawners limit reached!"
+    - "%PREFIX% &cThis chunks has too many spawners &7(&cMAX: &f%MAX%&7)&r"
     #- "You can set as many messages as you want here."

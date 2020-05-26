@@ -6,3 +6,12 @@ description: 'Limit amount of mob spawners in a certain chunk'
 commands:
   msl:
     description: 'Main command of MobSpawnerLimit plugin.'
+    permission: 'msl.command'
+    permission-message: '§8[§6MobSpawnerLimit§8]§7: §cYou are missing permissions!'
+    usage: |
+      §7Enable or disable this plugin checks
+      - §8<§6command§8> enable §8[§6true§f|§6false§8]
+      §7Set the limit for the maximum amount of spawners in a chunk
+      - §8<§6command§8> limit §8[§f1§6≤§fn§6≤§f65536§8]
+      §7Reload the config.yml values
+      - §8<§6command§8> §8reload

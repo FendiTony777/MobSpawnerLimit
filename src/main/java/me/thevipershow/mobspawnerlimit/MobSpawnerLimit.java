@@ -1,39 +1,57 @@
 package me.thevipershow.mobspawnerlimit;
 
-import me.thevipershow.mobspawnerlimit.commands.CommandListener;
+import java.util.HashSet;
+import java.util.Set;
+import me.thevipershow.mobspawnerlimit.checks.ChunkChecker;
+import me.thevipershow.mobspawnerlimit.commands.MSLCommand;
 import me.thevipershow.mobspawnerlimit.config.Values;
-import me.thevipershow.mobspawnerlimit.listeners.BlockPlaceListener;
-import me.thevipershow.mobspawnerlimit.runnables.ChunkInspector;
-import org.bukkit.Bukkit;
+import me.thevipershow.mobspawnerlimit.enums.Messages;
 import org.bukkit.Chunk;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.logging.Logger;
+public final class MobSpawnerLimit extends JavaPlugin implements Listener {
 
-public final class MobSpawnerLimit extends JavaPlugin {
-
-    public Plugin plugin;
-    public Logger logger;
-    public final Set<Chunk> chunks = new HashSet<>();
     private Values values;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        plugin = this;
-        logger = this.getLogger();
         values = Values.getInstance(this);
-        Bukkit.getPluginManager().registerEvents(BlockPlaceListener.getInstance(values, chunks), this);
-        Objects.requireNonNull(Bukkit.getPluginCommand("msl")).setExecutor(CommandListener.getInstance(values));
-        Bukkit.getScheduler().runTaskTimer(this, new ChunkInspector(values, chunks), 20L, 10L);
+        values.updateValues();
+        getServer().getPluginManager().registerEvents(this, this);
+        getCommand("msl").setExecutor(MSLCommand.getInstance(values));
     }
 
     @Override
     public void onDisable() {
         this.saveConfig();
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockPlace(final BlockPlaceEvent event) {
+        if (values.isEnabled()) {
+            final Player player = event.getPlayer();
+            final Block block = event.getBlock();
+            final Chunk chunk = block.getChunk();
+            final int currentLimit = values.getLimit();
+            final long chunkAmount = ChunkChecker.check(chunk);
+            if (chunkAmount + 1 > currentLimit) {
+                event.setCancelled(true);
+                values.getMessages()
+                        .stream()
+                        .map(s -> s
+                                .replaceAll("%PREFIX%", Messages.PREFIX.getString())
+                                .replaceAll("%MAX%", String.valueOf(currentLimit)))
+                        .forEachOrdered(
+                                s -> player.sendMessage(Messages.color(s))
+                        );
+            }
+        }
     }
 }
