@@ -1,5 +1,5 @@
 # Specify filepatterns you want git to ignore.
-.idea/
+.idea
 MobSpawnerBlock.iml
 MobSpawnerLimit.iml
-target/
+target
