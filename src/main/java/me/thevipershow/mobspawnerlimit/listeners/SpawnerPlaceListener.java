@@ -3,6 +3,7 @@ package me.thevipershow.mobspawnerlimit.listeners;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import me.thevipershow.mobspawnerlimit.MobSpawnerLimit;
@@ -40,18 +41,30 @@ public final class SpawnerPlaceListener implements Listener {
         Block block = event.getBlockPlaced();
         World blockWorld = block.getWorld();
 
-        if (isContainedInAnyBoundingBox(block) || checkForNearbySpawners(block) > 0) {
-            List<String> messagesToSend = MobSpawnerLimit.INSTANCE.getLoadedTomlConfigs().get(ConfigContext.MAIN).getValue(ConfigNode.CHECKS_MESSAGES);
-            if (messagesToSend == null) {
-                return;
+        String type = MobSpawnerLimit.INSTANCE.getLoadedTomlConfigs().get(ConfigContext.MAIN).getValue(ConfigNode.CHECKS_TYPE);
+
+        if (type == null) {
+            return; // :(
+        }
+
+        if (type.toLowerCase(Locale.ROOT).equals("radius")) {
+
+            if (isContainedInAnyBoundingBox(block) || checkForNearbySpawners(block) > 0) {
+                List<String> messagesToSend = MobSpawnerLimit.INSTANCE.getLoadedTomlConfigs().get(ConfigContext.MAIN).getValue(ConfigNode.CHECKS_MESSAGES);
+                if (messagesToSend == null) {
+                    return;
+                }
+                messagesToSend.forEach(str -> player.sendMessage(ChatUtils.color(ChatUtils.replaceAllPlaceholdersInString(str))));
+            } else {
+                Set<BoundingBox> boundingBoxes = this.worldLoadedBoundingBoxes.get(blockWorld.getUID());
+                if (boundingBoxes == null) {
+                    return;
+                }
+                boundingBoxes.add(generateSpawnerBox(block));
             }
-            messagesToSend.forEach(str -> player.sendMessage(ChatUtils.color(ChatUtils.replaceAllPlaceholdersInString(str))));
+
         } else {
-            Set<BoundingBox> boundingBoxes = this.worldLoadedBoundingBoxes.get(blockWorld.getUID());
-            if (boundingBoxes == null) {
-                return;
-            }
-            boundingBoxes.add(generateSpawnerBox(block));
+            // TODO: Check chunks
         }
     }
 
@@ -106,9 +119,7 @@ public final class SpawnerPlaceListener implements Listener {
         int xDist = mainConfig.getValue(ConfigNode.CHECKS_R_X_DIST);
         int yDist = mainConfig.getValue(ConfigNode.CHECKS_R_Y_DIST);
         int zDist = mainConfig.getValue(ConfigNode.CHECKS_R_Z_DIST);
-
         Location blockLocation = block.getLocation();
-
         return BoundingBox.of(blockLocation, xDist, yDist, zDist);
     }
 

@@ -12,7 +12,7 @@ id = 1
 
 [checks]
 enable = true
-type = 'radius'
+type = 'radius' # radius \ chunk
 messages = [
     "{PREFIX} &cYou have placed too many spawners here!",
     "{PREFIX} &7The current limit is the following&8:",
