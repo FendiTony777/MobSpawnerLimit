@@ -1,0 +1,30 @@
+#___ ___   ___   ____    _____ ____   ____  __    __  ____     ___  ____   _      ____  ___ ___  ____  ______
+#|   |   | /   \ |    \  / ___/|    \ /    ||  |__|  ||    \   /  _]|    \ | |    |    ||   |   ||    ||      |
+#| _   _ ||     ||  o  )(   \_ |  o  )  o  ||  |  |  ||  _  | /  [_ |  D  )| |     |  | | _   _ | |  | |      |
+#|  \_/  ||  O  ||     | \__  ||   _/|     ||  |  |  ||  |  ||    _]|    / | |___  |  | |  \_/  | |  | |_|  |_|
+#|   |   ||     ||  O  | /  \ ||  |  |  _  ||  `  '  ||  |  ||   [_ |    \ |     | |  | |   |   | |  |   |  |
+#|   |   ||     ||     | \    ||  |  |  |  | \      / |  |  ||     ||  .  \|     | |  | |   |   | |  |   |  |
+#|___|___| \___/ |_____|  \___||__|  |__|__|  \_/\_/  |__|__||_____||__|\_||_____||____||___|___||____|  |__|
+#
+# Plugin made by TheViperShow
+[config]
+id = 1
+
+[checks]
+enable = true
+type = 'radius'
+messages = [
+    "{PREFIX} &cYou have placed too many spawners here!",
+    "{PREFIX} &7The current limit is the following&8:",
+    "  - &7Every &c{MIN_X} &7blocks on the X axis.",
+    "  - &7Every &c{MIN_Y} &7blocks on the Y axis.",
+    "  - &7Every &c{MIN_Z} &7blocks on the Z axis."
+]
+
+[checks.radius]
+x-distance = 6
+y-distance = 6
+z-distance = 6
+
+[checks.chunk]
+limit = 2

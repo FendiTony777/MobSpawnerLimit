@@ -1,57 +1,59 @@
 package me.thevipershow.mobspawnerlimit;
 
-import java.util.HashSet;
-import java.util.Set;
-import me.thevipershow.mobspawnerlimit.checks.ChunkChecker;
-import me.thevipershow.mobspawnerlimit.commands.MSLCommand;
-import me.thevipershow.mobspawnerlimit.config.Values;
-import me.thevipershow.mobspawnerlimit.enums.Messages;
-import org.bukkit.Chunk;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import me.thevipershow.mobspawnerlimit.config.ConfigContext;
+import me.thevipershow.mobspawnerlimit.config.TomlConfiguration;
+import me.thevipershow.mobspawnerlimit.listeners.ListenerType;
+import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
-public final class MobSpawnerLimit extends JavaPlugin implements Listener {
+public enum MobSpawnerLimit {
 
-    private Values values;
+    INSTANCE;
 
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public void onEnable() {
-        saveDefaultConfig();
-        values = Values.getInstance(this);
-        values.updateValues();
-        getServer().getPluginManager().registerEvents(this, this);
-        getCommand("msl").setExecutor(MSLCommand.getInstance(values));
+    private MobSpawnerLimitPlugin mobSpawnerLimitPlugin;
+    private final Map<ConfigContext, TomlConfiguration> loadedTomlConfigs = new HashMap<>();
+
+    @NotNull
+    public final MobSpawnerLimitPlugin getMobSpawnerLimit() {
+        return mobSpawnerLimitPlugin;
     }
 
-    @Override
-    public void onDisable() {
-        this.saveConfig();
+    public final void startPlugin(@NotNull MobSpawnerLimitPlugin mobSpawnerLimitPlugin) {
+        this.mobSpawnerLimitPlugin = Objects.requireNonNull(mobSpawnerLimitPlugin, "The plugin tried to enable with a null instance!");
+        loadConfigurations();
+        enableListeners();
+        registerCommands();
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onBlockPlace(final BlockPlaceEvent event) {
-        if (values.isEnabled()) {
-            final Player player = event.getPlayer();
-            final Block block = event.getBlock();
-            final Chunk chunk = block.getChunk();
-            final int currentLimit = values.getLimit();
-            final long chunkAmount = ChunkChecker.check(chunk);
-            if (chunkAmount + 1 > currentLimit) {
-                event.setCancelled(true);
-                values.getMessages()
-                        .stream()
-                        .map(s -> s
-                                .replaceAll("%PREFIX%", Messages.PREFIX.getString())
-                                .replaceAll("%MAX%", String.valueOf(currentLimit)))
-                        .forEachOrdered(
-                                s -> player.sendMessage(Messages.color(s))
-                        );
-            }
+    private void loadConfigurations() {
+        for (ConfigContext configContext : ConfigContext.values()) {
+            String configName = configContext.getName();
+            this.mobSpawnerLimitPlugin.saveResource(configName, false);
+            this.loadedTomlConfigs.putIfAbsent(configContext, Objects.requireNonNull(configContext.build(), String.format("The config %s did not generate correctly!", configName)));
         }
+    }
+
+    @NotNull
+    public final Map<ConfigContext, TomlConfiguration> getLoadedTomlConfigs() {
+        return loadedTomlConfigs;
+    }
+
+    @NotNull
+    public final MobSpawnerLimitPlugin getMobSpawnerLimitPlugin() {
+        return mobSpawnerLimitPlugin;
+    }
+
+    private void enableListeners() {
+        PluginManager pluginManager = this.mobSpawnerLimitPlugin.getServer().getPluginManager();
+        for (ListenerType listenerType : ListenerType.values()) {
+            pluginManager.registerEvents(listenerType.build(), this.mobSpawnerLimitPlugin);
+        }
+    }
+
+    private void registerCommands() {
+
     }
 }
